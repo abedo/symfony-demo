@@ -16,6 +16,7 @@ use App\Entity\Tag;
 use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use SortDirection;
 use Symfony\Component\Clock\DatePoint;
 
 use function Symfony\Component\String\u;
@@ -48,7 +49,7 @@ class PostRepository extends ServiceEntityRepository
             ->innerJoin('p.author', 'a')
             ->leftJoin('p.tags', 't')
             ->where('p.publishedAt <= :now')
-            ->orderBy('p.publishedAt', 'DESC')
+            ->orderBy('p.publishedAt', SortDirection::Descending)
             ->setParameter('now', new DatePoint())
         ;
 
@@ -82,7 +83,7 @@ class PostRepository extends ServiceEntityRepository
 
         /** @var Post[] $result */
         $result = $queryBuilder
-            ->orderBy('p.publishedAt', 'DESC')
+            ->orderBy('p.publishedAt', SortDirection::Descending)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
